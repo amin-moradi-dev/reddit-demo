@@ -38,7 +38,3 @@ App: http://localhost:8080
 - `/login`, `/register`
 - `/` home feed
 - `/post/{id}` post details
-
-## License
-MIT (or your choice)
-
