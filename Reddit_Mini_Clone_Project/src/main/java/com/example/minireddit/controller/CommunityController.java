@@ -6,7 +6,6 @@ import com.example.minireddit.repository.CommunityRepository;
 import com.example.minireddit.service.PostService;
 import com.example.minireddit.service.UserService;
 import jakarta.validation.Valid;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller @RequestMapping("/community")
 public class CommunityController {
     private final CommunityRepository communities; private final PostService posts; private final UserService users;
-    public CommunityController(CommunityRepo c, PostService p, UserService u){ this.communities=c; this.posts=p; this.users=u; }
+    public CommunityController(CommunityRepository c, PostService p, UserService u){ this.communities=c; this.posts=p; this.users=u; }
 
 
     @GetMapping("/new")

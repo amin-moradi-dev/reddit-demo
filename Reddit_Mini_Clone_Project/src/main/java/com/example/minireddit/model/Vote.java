@@ -1,8 +1,5 @@
-package com.example.minireddit.vote;
+package com.example.minireddit.model;
 
-
-import com.example.minireddit.model.Post;
-import com.example.minireddit.model.User;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.Instant;
