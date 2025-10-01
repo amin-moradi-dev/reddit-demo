@@ -1,0 +1,50 @@
+DATE: 2025-09-29
+
+Name: Fatemeh Mehrizi
+
+1) What I have done / not done since last Scrum?
+
+- Done:
+. Created Git repository and added .gitignore.
+
+. Shared responsibilities (Backend: Fatemeh, Frontend: Amin).
+
+. Designed initial SQL (users, communities, posts-with-parentId-for-comments, votes).
+
+Not Done: Project skeleton bootstrapping (planned next).
+
+2) What I plan to do from this scrum to next? (next 24 hours)
+
+. Create Spring Boot project skeleton (Maven).
+
+. Create base packages and starter classes.
+
+. Start entities and repositories.
+
+3) Where do I need assistance? What do I need to figure out?
+
+. Confirm final DB field names/constraints.
+
+. Agree on minimal URL scheme for pages (home, community, post).
+
+NAME: Mohammadamin Moradi
+
+1) What I have done / not done since last Scrum?
+
+- Done:
+. Agreed on division of work (Frontend: Amin).
+. Set up local workspace.
+
+- Not done:Frontend scaffolding (layout, pages).
+
+2) What I plan to do from this scrum to next (next 24 hours)?
+
+. Create base layout (header/nav/footer) and initial pages.
+
+. Prepare basic CSS/Bootstrap structure.
+
+3) Where do I need assistance? What do I need to figure out?
+
+. Navigation structure (links & routes) to match backend URLs.
+
+. Any branding/style preferences.
