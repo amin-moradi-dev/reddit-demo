@@ -4,7 +4,6 @@ Name: Fatemeh Mehrizi
 
 1) What I have done / not done since last Scrum?
 
-- Done:
 . Created Git repository and added .gitignore.
 
 . Shared responsibilities (Backend: Fatemeh, Frontend: Amin).
@@ -31,8 +30,8 @@ NAME: Mohammadamin Moradi
 
 1) What I have done / not done since last Scrum?
 
-- Done:
 . Agreed on division of work (Frontend: Amin).
+
 . Set up local workspace.
 
 - Not done:Frontend scaffolding (layout, pages).
