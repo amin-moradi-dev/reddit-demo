@@ -17,10 +17,10 @@ public class VoteServiceImpl implements VoteService {
     @Override @Transactional
     public int castVote(Long userId, Long postId, int value){
         if (value != 1 && value != -1) throw new IllegalArgumentException("Vote must be +1 or -1");
-        com.example.minireddit.vote.Vote v = votes.findByUser_IdAndPost_Id(userId, postId)
+        Vote v = votes.findByUser_IdAndPost_Id(userId, postId)
                 .map(existing -> { existing.setValue(value); return existing; })
                 .orElseGet(() -> {
-                    com.example.minireddit.vote.Vote nv = new com.example.minireddit.vote.Vote();
+                    Vote nv = new Vote();
                     User u = new User(); u.setId(userId); nv.setUser(u);
                     Post p = new Post(); p.setId(postId); nv.setPost(p);
                     nv.setValue(value);

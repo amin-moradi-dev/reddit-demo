@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PostServiceImpl implements PostService {
+
     private final PostRepository posts;
     private final CommunityRepository communities;
     private final UserRepository users;
