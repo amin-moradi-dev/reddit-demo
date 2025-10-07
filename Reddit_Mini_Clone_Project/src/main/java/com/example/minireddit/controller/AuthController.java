@@ -1,31 +1,36 @@
 package com.example.minireddit.controller;
 
-
-import com.example.minireddit.dto.RegisterDto;
 import com.example.minireddit.service.UserService;
-import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-
 @Controller
 public class AuthController {
-    private final UserService users;
-    public AuthController(UserService users){ this.users=users; }
-
+    private final UserService userService;
+    public AuthController(UserService userService){this.userService=userService;}
 
     @GetMapping("/login")
-    public String login(){ return "auth/login"; }
-
+    public String login(){ return "login"; }
 
     @GetMapping("/register")
-    public String registerForm(Model model){ model.addAttribute("dto", new RegisterDto("", "", "")); return "auth/register"; }
-
+    public String registerForm(){ return "register"; }
 
     @PostMapping("/register")
-    public String register(@ModelAttribute("dto") @Valid RegisterDto dto){
-        users.register(dto);
-        return "redirect:/login?registered";
+    public String register(@RequestParam @Email String email,
+                           @RequestParam @NotBlank String username,
+                           @RequestParam @NotBlank String fullName,
+                           @RequestParam @NotBlank String password,
+                           Model model){
+        try {
+            userService.register(email, username, fullName, password);
+            return "redirect:/login?registered";
+        } catch (Exception e){
+            model.addAttribute("error", e.getMessage());
+            return "register";
+        }
     }
 }
+

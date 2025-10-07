@@ -1,56 +1,45 @@
 package com.example.minireddit.controller;
 
-
-import com.example.minireddit.dto.PostCreateDto;
 import com.example.minireddit.model.Post;
-import com.example.minireddit.repository.CommunityRepository;
-import com.example.minireddit.repository.PostRepository;
+import com.example.minireddit.model.User;
+import com.example.minireddit.repository.PostRepo;
+import com.example.minireddit.repository.UserRepo;
 import com.example.minireddit.service.PostService;
-import com.example.minireddit.service.UserService;
-import jakarta.validation.Valid;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
-@Controller @RequestMapping("/post")
+@Controller
+@RequestMapping("/post")
 public class PostController {
-    private final PostService posts; private final PostRepository postRepo; private final CommunityRepository communities; private final UserService users;
-    public PostController(PostService posts, PostRepository postRepo, CommunityRepository communities, UserService users){
-        this.posts=posts; this.postRepo=postRepo; this.communities=communities; this.users=users; }
+    private final PostRepo postRepo;
+    private final PostService postService;
+    private final UserRepo userRepo;
 
-
-    @GetMapping("/new")
-    public String newForm(@RequestParam(required=false) Long communityId, Model model){
-        model.addAttribute("dto", new PostCreateDto(communityId, "", "", "", null));
-        model.addAttribute("communities", communities.findAll());
-        return "post/form";
+    public PostController(PostRepo postRepo, PostService postService, UserRepo userRepo){
+        this.postRepo = postRepo; this.postService = postService; this.userRepo = userRepo;
     }
-
-
-    @PostMapping
-    public String create(@ModelAttribute("dto") @Valid PostCreateDto dto){
-        Long uid = users.currentUserId();
-        Post p = posts.create(uid, dto);
-        return "redirect:/post/" + p.getId();
-    }
-
 
     @GetMapping("/{id}")
-    public String view(@PathVariable Long id, Model model){
-        Post p = posts.get(id);
+    public String detail(@PathVariable Long id, Model model){
+        Post p = postRepo.findById(id).orElseThrow();
+        List<Post> comments = postRepo.findByParent_IdOrderByCreatedAtAsc(id);
         model.addAttribute("post", p);
-        model.addAttribute("comments", postRepo.findByParent_IdOrderByCreatedAtAsc(id));
-        model.addAttribute("score", posts.score(id));
-        return "post/view";
+        model.addAttribute("comments", comments);
+        return "post_detail";
     }
 
-
     @PostMapping("/{id}/comment")
-    public String comment(@PathVariable Long id, @RequestParam String body){
-        Long uid = users.currentUserId();
-        PostCreateDto dto = new PostCreateDto(posts.get(id).getCommunity().getId(), null, body, null, id);
-        posts.create(uid, dto);
-        return "redirect:/post/" + id + "#comments";
+    public String comment(@AuthenticationPrincipal UserDetails principal,
+                          @PathVariable Long id,
+                          @RequestParam String body){
+        if (principal == null) return "redirect:/login";
+        User me = userRepo.findByUsername(principal.getUsername()).orElseThrow();
+        postService.createComment(me, id, body);
+        return "redirect:/post/" + id;
     }
 }
