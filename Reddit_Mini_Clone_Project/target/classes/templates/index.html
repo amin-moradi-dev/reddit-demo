@@ -1,0 +1,31 @@
+<html xmlns:th="http://www.thymeleaf.org" th:replace="layout :: body">
+<body>
+<h1>Mini Reddit</h1>
+
+<form method="get" th:action="@{/search}" class="search">
+  <input type="text" name="q" placeholder="Search posts..." th:value="${q}">
+  <button type="submit">Search</button>
+</form>
+
+<div th:if="${#lists.isEmpty(posts)}">
+  <p>No posts yet.</p>
+</div>
+
+<ul class="post-list" th:if="${!#lists.isEmpty(posts)}">
+  <li th:each="p : ${posts}" class="post-item">
+    <div class="votes">
+      <button class="up" th:attr="data-id=${p.id}">▲</button>
+      <div class="score" th:attr="data-id=${p.id}">0</div>
+      <button class="down" th:attr="data-id=${p.id}">▼</button>
+    </div>
+    <div class="content">
+      <a th:href="@{|/post/${p.id}|}" th:text="${p.title}">Post title</a>
+      <div class="meta">
+        <span th:text="${#temporals.format(p.createdAt, 'yyyy-MM-dd HH:mm')}">date</span>
+        <span th:text="${p.user != null ? p.user.username : 'anonymous'}">user</span>
+      </div>
+    </div>
+  </li>
+</ul>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<html xmlns:th="http://www.thymeleaf.org" th:replace="layout :: body">
+<body>
+<a th:href="@{/}">← Back</a>
+<article>
+  <h2 th:text="${post.title}">Title</h2>
+  <div class="meta">
+    <span th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">date</span>
+    <span>by <b th:text="${post.user != null ? post.user.username : 'anonymous'}">user</b></span>
+  </div>
+  <div class="votes">
+    <button class="up" th:attr="data-id=${post.id}">▲</button>
+    <div class="score" th:attr="data-id=${post.id}">0</div>
+    <button class="down" th:attr="data-id=${post.id}">▼</button>
+  </div>
+  <div class="body" th:utext="${post.body}">Body</div>
+</article>
+
+<section class="comments">
+  <h3 th:text="'Comments (' + ${#lists.size(comments)} + ')'">Comments</h3>
+  <ul>
+    <li th:each="c : ${comments}">
+      <div class="meta">
+        <span th:text="${#temporals.format(c.createdAt, 'yyyy-MM-dd HH:mm')}">date</span>
+        <span th:text="${c.user != null ? c.user.username : 'anonymous'}">user</span>
+      </div>
+      <div th:utext="${c.body}">comment...</div>
+    </li>
+  </ul>
+</section>
+
+<section th:if="${#httpServletRequest.remoteUser != null}" class="add-comment">
+  <form th:action="@{|/post/${post.id}/comment|}" method="post">
+    <textarea name="body" rows="4" placeholder="Write a comment..." required></textarea>
+    <button type="submit">Comment</button>
+  </form>
+</section>
+
+<section th:if="${#httpServletRequest.remoteUser == null}">
+  <p><a th:href="@{/login}">Log in</a> to comment.</p>
+</section>
+</body>
+</html>

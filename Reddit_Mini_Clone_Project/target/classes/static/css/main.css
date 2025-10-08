@@ -1,0 +1,14 @@
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,sans-serif;margin:0;padding:0;background:#fafafa;color:#222}
+.container{max-width:900px;margin:2rem auto;padding:0 1rem}
+.nav{display:flex;gap:1rem;align-items:center;padding:0.75rem 1rem;background:#fff;border-bottom:1px solid #eee;position:sticky;top:0}
+.nav .spacer{flex:1}
+a{color:#0b57d0;text-decoration:none} a:hover{text-decoration:underline}
+h1,h2,h3{margin:1rem 0 0.5rem}
+.post-list{list-style:none;padding:0;margin:1rem 0}
+.post-item{display:flex;gap:1rem;padding:0.75rem;border:1px solid #eee;background:#fff;margin-bottom:0.75rem;border-radius:8px}
+.votes{display:flex;flex-direction:column;align-items:center;gap:0.25rem}
+.votes button{border:1px solid #ddd;background:#f6f6f6;border-radius:6px;padding:0.25rem 0.5rem;cursor:pointer}
+.meta{color:#666;font-size:0.9rem;display:flex;gap:0.5rem}
+textarea,input[type=text],input[type=email],input[type=password]{width:100%;padding:0.5rem;border:1px solid #ddd;border-radius:6px;margin:0.25rem 0 0.75rem;background:#fff}
+button{padding:0.5rem 0.8rem;border:1px solid #ddd;border-radius:6px;background:#fff;cursor:pointer}
+.search{display:flex;gap:0.5rem}
