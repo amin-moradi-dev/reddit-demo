@@ -24,4 +24,7 @@ public interface CommunityService {
      * Deletes a community by ID.
      */
     void delete(Long id);
+
+
+    Object findAllCommunities();
 }

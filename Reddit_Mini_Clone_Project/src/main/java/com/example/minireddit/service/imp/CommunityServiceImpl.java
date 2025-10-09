@@ -34,4 +34,7 @@ public class CommunityServiceImpl implements CommunityService {
     public void delete(Long id) {
         communityRepo.deleteById(id);
     }
+    public List<Community> findAllCommunities() {
+        return communityRepo.findAll();
+    }
 }
