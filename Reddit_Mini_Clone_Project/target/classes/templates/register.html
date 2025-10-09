@@ -1,14 +1,41 @@
-<html xmlns:th="http://www.thymeleaf.org" th:replace="layout :: body">
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Register | MiniReddit+</title>
+</head>
 <body>
-<h2>Register</h2>
-<p th:if="${error}" th:text="${error}"></p>
-<form th:action="@{/register}" method="post">
-  <label>Email <input type="email" name="email" required></label>
-  <label>Username <input type="text" name="username" required></label>
-  <label>Full name <input type="text" name="fullName" required></label>
-  <label>Password <input type="password" name="password" required></label>
-  <button type="submit">Create account</button>
-</form>
-<p>Already have an account? <a th:href="@{/login}">Login</a></p>
+<section layout:fragment="body" class="col-md-6 offset-md-3 mt-5">
+    <h4 class="text-center mb-3">Create Account</h4>
+
+    <!-- ✅ Flash messages -->
+    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+    <!-- ✅ Registration Form -->
+    <form th:action="@{/register}" method="post" class="card p-4 shadow-sm">
+        <div class="mb-3">
+            <label class="form-label">Full Name</label>
+            <input type="text" name="fullName" class="form-control" placeholder="Your name" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" name="email" class="form-control" placeholder="example@mail.com" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input type="password" name="password" class="form-control" placeholder="********" required>
+        </div>
+
+        <button class="btn btn-success w-100">Register</button>
+    </form>
+
+    <p class="text-center mt-3">
+        Already have an account? <a th:href="@{/login}">Login</a>
+    </p>
+</section>
 </body>
 </html>

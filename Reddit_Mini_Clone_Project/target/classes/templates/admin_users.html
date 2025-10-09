@@ -1,27 +1,30 @@
-<html xmlns:th="http://www.thymeleaf.org" th:replace="layout :: body">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="layout :: layout">
 <body>
-<h2>Users</h2>
-<table>
-  <thead><tr><th>ID</th><th>Username</th><th>Email</th><th>Role</th><th>Actions</th></tr></thead>
-  <tbody>
-    <tr th:each="u : ${users}">
-      <td th:text="${u.id}">1</td>
-      <td th:text="${u.username}">user</td>
-      <td th:text="${u.email}">email</td>
-      <td th:text="${u.role}">USER</td>
-      <td>
-        <form th:action="@{|/admin/users/${u.id}/promote|}" method="post" style="display:inline">
-          <button type="submit">Promote to MOD</button>
-        </form>
-        <form th:action="@{|/admin/users/${u.id}/demote|}" method="post" style="display:inline">
-          <button type="submit">Demote to USER</button>
-        </form>
-        <form th:action="@{|/admin/users/${u.id}/delete|}" method="post" style="display:inline">
-          <button type="submit">Delete</button>
-        </form>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<div th:fragment="body">
+    <h4 class="mb-3 text-center">Admin: Manage Users</h4>
+    <table class="table table-hover">
+        <thead class="table-dark">
+        <tr><th>ID</th><th>Name</th><th>Email</th><th>Enabled</th><th>Roles</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+        <tr th:each="u : ${users}">
+            <td th:text="${u.id}"></td>
+            <td th:text="${u.fullName}"></td>
+            <td th:text="${u.email}"></td>
+            <td><span th:text="${u.enabled ? 'Yes':'No'}"></span></td>
+            <td th:text="${u.roles}"></td>
+            <td>
+                <form th:action="@{'/admin/users/' + ${u.id} + '/delete'}" method="post" class="d-inline">
+                    <button class="btn btn-sm btn-danger">Delete</button>
+                </form>
+                <form th:action="@{'/admin/users/' + ${u.id} + '/toggleAdmin'}" method="post" class="d-inline">
+                    <button class="btn btn-sm btn-secondary">Toggle Admin</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>

@@ -1,0 +1,19 @@
+<div th:fragment="alerts">
+    <div th:if="${success}" class="alert alert-success alert-dismissible fade show">
+        <span th:text="${success}"></span>
+        <button class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show">
+        <span th:text="${error}"></span>
+        <button class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    <div th:if="${info}" class="alert alert-info alert-dismissible fade show">
+        <span th:text="${info}"></span>
+        <button class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+
+    <div th:fragment="alerts">
+        <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+    </div>
+</div>

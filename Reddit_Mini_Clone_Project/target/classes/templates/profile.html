@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="layout :: layout">
+<body>
+<div th:fragment="body" class="col-md-6 offset-md-3">
+    <h3 th:text="${user.fullName}"></h3>
+    <p th:text="${user.email}"></p>
+    <h5 class="mt-4">Posts</h5>
+    <div class="list-group">
+        <a th:each="p : ${user.posts}" th:href="@{'/post/' + ${p.id}}" class="list-group-item list-group-item-action">
+            <b th:text="${p.title}"></b>
+        </a>
+    </div>
+</div>
+</body>
+</html>

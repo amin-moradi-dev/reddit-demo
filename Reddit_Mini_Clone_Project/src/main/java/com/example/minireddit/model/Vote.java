@@ -1,45 +1,46 @@
 package com.example.minireddit.model;
 
 import jakarta.persistence.*;
-import java.time.Instant;
 
-@Entity @Table(name="votes")
+@Entity
+@Table(name = "votes",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "post_id"}))
 public class Vote {
-    @EmbeddedId
-    private VoteId id;
 
-    @MapsId("postId")
-    @ManyToOne(optional=false, fetch=FetchType.LAZY)
-    @JoinColumn(name="post_id", nullable=false)
-    private Post post;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @MapsId("userId")
-    @ManyToOne(optional=false, fetch=FetchType.LAZY)
-    @JoinColumn(name="user_id", nullable=false)
+    private boolean upvote;  // true = upvote, false = downvote
+
+    // ✅ Relationships
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name="vote_type", nullable=false)
-    private int voteType; // -1 or +1
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "post_id", nullable = false)
+    private Post post;
 
-    @Column(name="created_at", nullable=false)
-    private Instant createdAt = Instant.now();
+    // 🧩 Constructors
+    public Vote() {}
 
-    public Vote(){}
-
-    @PrePersist @PreUpdate
-    private void validate(){
-        if (voteType != -1 && voteType != 1) throw new IllegalArgumentException("voteType must be -1 or +1");
+    public Vote(User user, Post post, boolean upvote) {
+        this.user = user;
+        this.post = post;
+        this.upvote = upvote;
     }
 
-    // getters/setters
-    public VoteId getId(){return id;}
-    public void setId(VoteId id){this.id=id;}
-    public Post getPost(){return post;}
-    public void setPost(Post post){this.post=post;}
-    public User getUser(){return user;}
-    public void setUser(User user){this.user=user;}
-    public int getVoteType(){return voteType;}
-    public void setVoteType(int voteType){this.voteType=voteType;}
-    public Instant getCreatedAt(){return createdAt;}
-    public void setCreatedAt(Instant createdAt){this.createdAt=createdAt;}
+    // 🧠 Getters & Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public boolean isUpvote() { return upvote; }
+    public void setUpvote(boolean upvote) { this.upvote = upvote; }
+
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
+
+    public Post getPost() { return post; }
+    public void setPost(Post post) { this.post = post; }
 }

@@ -1,24 +1,23 @@
-<html xmlns:th="http://www.thymeleaf.org" th:replace="layout :: body">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="layout :: layout">
 <body>
-<a th:href="@{/}">← Back</a>
-<h2 th:text="${community.name}">Community</h2>
-<p th:text="${community.description}">Description</p>
+<div th:fragment="body">
+    <div class="d-flex justify-content-between mb-3">
+        <div>
+            <h4 th:text="${community.name}"></h4>
+            <p th:text="${community.description}"></p>
+        </div>
+        <a class="btn btn-sm btn-primary" th:href="@{'/community/' + ${community.id} + '/newpost'}">New Post</a>
+    </div>
 
-<h3>Posts</h3>
-<ul class="post-list" th:if="${!#lists.isEmpty(posts)}">
-  <li th:each="p : ${posts}">
-    <a th:href="@{|/post/${p.id}|}" th:text="${p.title}">Post title</a>
-  </li>
-</ul>
-<p th:if="${#lists.isEmpty(posts)}">No posts in this community yet.</p>
+    <div th:if="${#lists.isEmpty(posts)}" class="alert alert-light">No posts yet.</div>
 
-<h3 th:if="${#httpServletRequest.remoteUser != null}">Create a post</h3>
-<form th:if="${#httpServletRequest.remoteUser != null}" th:action="@{|/community/${communityId}/post|}" method="post">
-  <input type="text" name="title" placeholder="Title" required>
-  <textarea name="body" rows="4" placeholder="Write something..." required></textarea>
-  <button type="submit">Post</button>
-</form>
-<p th:if="${#httpServletRequest.remoteUser == null}"><a th:href="@{/login}">Log in</a> to post.</p>
-
+    <div class="list-group">
+        <a th:each="p : ${posts}" th:href="@{'/post/' + ${p.id}}" class="list-group-item list-group-item-action">
+            <b th:text="${p.title}"></b>
+            <small class="text-muted" th:text="' by ' + ${p.author.fullName}"></small>
+        </a>
+    </div>
+</div>
 </body>
 </html>
