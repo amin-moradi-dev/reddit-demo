@@ -1,23 +1,22 @@
 package com.example.minireddit.controller;
 
-import com.example.minireddit.service.PostService;
-import org.springframework.data.domain.Page;
+import com.example.minireddit.service.CommunityService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import com.example.minireddit.model.Post;
-
+import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class HomeController {
-    private final PostService posts;
-    public HomeController(PostService posts){ this.posts=posts; }
 
+    private final CommunityService communityService;
+
+    public HomeController(CommunityService communityService) {
+        this.communityService = communityService;
+    }
 
     @GetMapping("/")
-    public String home(@RequestParam(defaultValue="0") int page, Model model){
-        Page<Post> feed = posts.home(page, 10);
-        model.addAttribute("feed", feed);
+    public String home(Model model) {
+        model.addAttribute("communities", communityService.findAllCommunities());
         return "index";
     }
 }

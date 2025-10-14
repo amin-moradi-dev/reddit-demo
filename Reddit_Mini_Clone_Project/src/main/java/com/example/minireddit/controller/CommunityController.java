@@ -1,41 +1,34 @@
 package com.example.minireddit.controller;
 
-import com.example.minireddit.dto.CommunityCreateDto;
 import com.example.minireddit.model.Community;
-import com.example.minireddit.repository.CommunityRepository;
+import com.example.minireddit.service.CommunityService;
 import com.example.minireddit.service.PostService;
-import com.example.minireddit.service.UserService;
-import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-
-@Controller @RequestMapping("/community")
+@Controller
+@RequestMapping("/community")
 public class CommunityController {
-    private final CommunityRepository communities; private final PostService posts; private final UserService users;
-    public CommunityController(CommunityRepository c, PostService p, UserService u){ this.communities=c; this.posts=p; this.users=u; }
 
+    private final CommunityService communityService;
+    private final PostService postService;
 
-    @GetMapping("/new")
-    public String newForm(Model model){ model.addAttribute("dto", new CommunityCreateDto("","")); return "community/form"; }
-
-
-    @PostMapping
-    public String create(@ModelAttribute("dto") @Valid CommunityCreateDto dto){
-        Community c = new Community();
-        c.setName(dto.name()); c.setDescription(dto.description());
-        c.setOwner(users.currentUser());
-        communities.save(c);
-        return "redirect:/community/"+c.getId();
+    public CommunityController(CommunityService communityService, PostService postService) {
+        this.communityService = communityService;
+        this.postService = postService;
     }
 
-
     @GetMapping("/{id}")
-    public String view(@PathVariable Long id, @RequestParam(defaultValue="0") int page, Model model){
-        Community c = communities.findById(id).orElseThrow();
+    public String viewCommunity(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
+        Community c = communityService.getById(id);
+        if (c == null) {
+            redirectAttributes.addFlashAttribute("error", "Community not found!");
+            return "redirect:/";
+        }
         model.addAttribute("community", c);
-        model.addAttribute("feed", posts.community(id, page, 10));
-        return "community/view";
+        model.addAttribute("posts", postService.listByCommunity(c));
+        return "community";
     }
 }

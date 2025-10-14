@@ -1,13 +1,18 @@
 package com.example.minireddit.repository;
 
-import org.springframework.data.jpa.repository.*;
-import org.springframework.data.repository.query.Param;
-import java.util.*;
+import com.example.minireddit.model.Post;
+import com.example.minireddit.model.User;
+import com.example.minireddit.model.Vote;
+import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.Optional;
 
-public interface VoteRepository extends JpaRepository<com.example.minireddit.vote.Vote, Long> {
-    Optional<com.example.minireddit.vote.Vote> findByUser_IdAndPost_Id(Long userId, Long postId);
+public interface VoteRepository extends JpaRepository<Vote, Long> {
 
+    Optional<Vote> findByUserAndPost(User user, Post post);
 
-    @Query("select coalesce(sum(v.value),0) from Vote v where v.post.id = :postId")
-    int sumForPost(@Param("postId") Long postId);
+    // ✅ Count upvotes (upvote = true)
+    long countByPostAndUpvoteTrue(Post post);
+
+    // ✅ Count downvotes (upvote = false)
+    long countByPostAndUpvoteFalse(Post post);
 }

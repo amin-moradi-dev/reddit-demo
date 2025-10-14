@@ -1,15 +1,12 @@
 package com.example.minireddit.service;
 
-
-import com.example.minireddit.dto.PostCreateDto;
+import com.example.minireddit.model.Community;
 import com.example.minireddit.model.Post;
-import org.springframework.data.domain.Page;
-
+import java.util.List;
 
 public interface PostService {
-    Page<Post> home(int page, int size);
-    Page<Post> community(Long communityId, int page, int size);
-    Post create(Long authorId, PostCreateDto dto);
-    Post get(Long id);
-    int score(Long postId);
+    List<Post> listByCommunity(Community community);
+    Post getById(Long id);
+    Post create(Post post);
 }
+

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="layout :: layout">
+<body>
+<div th:fragment="body" class="col-md-8 offset-md-2">
+    <h4>Search Results for "<span th:text="${query}"></span>"</h4>
+    <div th:if="${#lists.isEmpty(posts)}" class="alert alert-light">No results found.</div>
+    <div class="list-group">
+        <a th:each="p : ${posts}" th:href="@{'/post/' + ${p.id}}" class="list-group-item list-group-item-action">
+            <b th:text="${p.title}"></b>
+            <small class="text-muted" th:text="'by ' + ${p.author.fullName}"></small>
+        </a>
+    </div>
+</div>
+</body>
+</html>

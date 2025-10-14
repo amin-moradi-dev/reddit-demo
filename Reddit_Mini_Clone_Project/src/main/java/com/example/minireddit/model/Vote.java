@@ -1,30 +1,46 @@
 package com.example.minireddit.model;
 
 import jakarta.persistence.*;
-import lombok.*;
-import java.time.Instant;
-
 
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "post_id"}))
-@Getter @Setter @NoArgsConstructor
+@Table(name = "votes",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "post_id"}))
 public class Vote {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private boolean upvote;  // true = upvote, false = downvote
 
-    @ManyToOne(optional = false)
+    // ✅ Relationships
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-
-    @ManyToOne(optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
+    // 🧩 Constructors
+    public Vote() {}
 
-    @Column(nullable = false)
-    private Integer value; // -1 or +1
+    public Vote(User user, Post post, boolean upvote) {
+        this.user = user;
+        this.post = post;
+        this.upvote = upvote;
+    }
 
+    // 🧠 Getters & Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    @Column(nullable = false)
-    private Instant createdAt = Instant.now();
+    public boolean isUpvote() { return upvote; }
+    public void setUpvote(boolean upvote) { this.upvote = upvote; }
+
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
+
+    public Post getPost() { return post; }
+    public void setPost(Post post) { this.post = post; }
 }
