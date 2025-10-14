@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>RedditDemo - Home</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body class="bg-light">
+<div class="container" style="max-width: 900px; margin: 0 auto; padding-top: 30px;">
+
+<div th:replace="fragments/header :: header"></div>
+
+<h2>Welcome, <span th:text="${username != null ? username : 'guest'}">guest</span>!</h2>
+
+<h3>Posts</h3>
+
+<div th:if="${#lists.isEmpty(posts)}">
+    <p>No posts available.</p>
+</div>
+
+<div th:if="${username != 'guest'}" class="mb-4">
+    <h4>Create a new post</h4>
+    <form th:action="@{/posts/create}" th:object="${newPost}" method="post">
+        <div class="mb-3">
+            <label>Title</label>
+            <input type="text" th:field="*{title}" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label>Content</label>
+            <textarea th:field="*{content}" class="form-control" rows="3" required></textarea>
+        </div>
+        <div class="mb-3">
+            <label>Image URL (optional)</label>
+            <input type="text" th:field="*{imageUrl}" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-success">Submit Post</button>
+    </form>
+</div>
+
+<div th:each="post : ${posts}" class="card mb-3">
+    <div class="card-body">
+        <h5 class="card-title" th:text="${post.title}">Post Title</h5>
+        <h6 class="card-subtitle mb-2 text-muted">
+            by <span th:text="${post.author != null ? post.author.username : 'guest'}">Author</span> |
+            Votes: <span th:text="${voteCounts[post.id]}">0</span>
+        </h6>
+        <p class="card-text" th:text="${post.content}">Content...</p>
+
+        <div th:if="${post.imageUrl}">
+            <img th:src="${post.imageUrl}" alt="Post Image" class="img-fluid mt-2">
+        </div>
+
+        <div th:if="${username != 'guest'}" class="mt-2">
+            <form th:action="@{'/posts/' + ${post.id} + '/upvote'}" method="post" style="display:inline">
+                <button type="submit" class="btn btn-sm btn-success">Upvote</button>
+            </form>
+            <form th:action="@{'/posts/' + ${post.id} + '/downvote'}" method="post" style="display:inline">
+                <button type="submit" class="btn btn-sm btn-danger">Downvote</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div th:if="${username == 'guest'}" class="mt-3">
+    <a class="btn btn-primary" th:href="@{/register}">Register</a>
+    <a class="btn btn-secondary" th:href="@{/login}">Login</a>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+</div>
+</body>
+</html>
