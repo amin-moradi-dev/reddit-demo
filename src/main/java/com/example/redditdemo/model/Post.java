@@ -19,7 +19,11 @@ public class Post {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    private String imageUrl; // New field for image
+    private String imageUrl;
+
+    @ManyToOne
+    @JoinColumn(name = "community_id")
+    private Community community;
 
     @ManyToOne
     @JoinColumn(name = "author_id")
@@ -27,6 +31,8 @@ public class Post {
 
     private LocalDateTime creationTime = LocalDateTime.now();
 
+    public Community getCommunity() { return community; }
+    public void setCommunity(Community community) { this.community = community; }
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }

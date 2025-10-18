@@ -13,7 +13,7 @@ public class Vote {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int value; // 1 or -1
+    private int value;
 
     @ManyToOne
     private Post post;

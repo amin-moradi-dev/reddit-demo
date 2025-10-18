@@ -27,15 +27,12 @@ public class HomeController {
     @GetMapping("/")
     public String home(@AuthenticationPrincipal UserDetails user, Model model) {
 
-        // If a user is logged in, show their username; otherwise "guest"
         String username = (user != null) ? user.getUsername() : "guest";
         model.addAttribute("username", username);
 
-        // Fetch posts ordered by newest first
         List<Post> posts = postRepository.findAllByOrderByCreationTimeDesc();
         model.addAttribute("posts", posts);
 
-        // Calculate vote counts
         Map<Long, Integer> voteCounts = new HashMap<>();
         for (Post post : posts) {
             List<Vote> votes = voteRepository.findByPost(post);

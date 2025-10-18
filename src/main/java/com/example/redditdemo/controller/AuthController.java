@@ -15,7 +15,6 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
-    // Show registration form
     @GetMapping("/register")
     public String showRegister(Model model) {
         model.addAttribute("user", new User());

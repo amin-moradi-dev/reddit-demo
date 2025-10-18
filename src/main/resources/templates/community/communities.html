@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Communities</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body class="container mt-5">
+<h2>All Communities</h2>
+
+<div th:if="${#lists.isEmpty(communities)}">
+    <p>No communities found.</p>
+</div>
+
+<div th:each="community : ${communities}" class="card mb-3">
+    <div class="card-body">
+        <h5 class="card-title" th:text="${community.name}">Community Name</h5>
+        <p class="card-text" th:text="${community.description}">Description...</p>
+        <p class="card-text">
+            Posts: <span th:text="${#lists.size(community.posts)}">0</span>
+        </p>
+    </div>
+</div>
+
+<a class="btn btn-primary mt-3" th:href="@{/}">Back to Home</a>
+</body>
+</html>

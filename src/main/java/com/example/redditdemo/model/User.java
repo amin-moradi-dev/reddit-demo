@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "app_user") // avoid reserved word "user"
+@Table(name = "app_user")
 @Getter
 @Setter
 public class User {
