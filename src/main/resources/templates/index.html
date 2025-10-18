@@ -4,11 +4,14 @@
     <meta charset="UTF-8">
     <title>RedditDemo - Home</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/home.css}">
 </head>
-<body class="bg-light">
-<div class="container" style="max-width: 900px; margin: 0 auto; padding-top: 30px;">
+<body>
 
 <div th:replace="fragments/header :: header"></div>
+
+<div class="home-container">
+
 
 <h2>Welcome, <span th:text="${username != null ? username : 'guest'}">guest</span>!</h2>
 

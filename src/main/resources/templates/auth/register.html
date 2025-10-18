@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <title>Register</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/login.css}">
 </head>
-<body class="bg-light">
-<div class="container" style="max-width: 900px; margin: 0 auto; padding-top: 30px;">
+<body>
+<div class="login-card">
 
 <h2>Register</h2>
 
@@ -32,7 +33,7 @@
         <div th:if="${#fields.hasErrors('password')}" class="text-danger" th:errors="*{password}"></div>
     </div>
 
-    <button type="submit" class="btn btn-success">Register</button>
+    <button type="submit" class="btn btn-primary w-100">Register</button>
 </form>
 
 
