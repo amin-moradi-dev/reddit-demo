@@ -1,5 +1,8 @@
 package com.example.redditdemo.controller;
 
+import com.example.redditdemo.model.Community;  // adjust the package if different
+import java.util.List;
+
 import com.example.redditdemo.service.CommunityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,8 +16,14 @@ public class CommunityController {
     private CommunityService communityService;
 
     @GetMapping("/communities")
-    public String listCommunities(Model model) {
-        model.addAttribute("communities", communityService.getAllCommunities());
-        return "communities"; // Thymeleaf template
+    public String viewCommunities(Model model) {
+        model.addAttribute("communities", communityService.findAll());
+        return "community/communities"; // points to templates/community/communities.html
     }
+
+
 }
+
+
+
+

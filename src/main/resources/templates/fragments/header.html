@@ -4,46 +4,76 @@
     <meta charset="UTF-8">
     <title>RedditDemo</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
 
 <body>
-<div th:fragment="header">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
-        <div class="container-fluid">
-            <a class="navbar-brand" th:href="@{/}">
-                <img th:src="@{/images/Logo-yellow-bg.png}" alt="RedditDemo" width="50" height="50" class="d-inline-block align-text-top">
-                RedditDemo
+<div th:fragment="header" class="bg-white sticky-top">
+    <nav class="navbar navbar-expand-lg shadow-sm">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+
+            <!-- Left: Brand / Logo -->
+            <a class="navbar-brand d-flex align-items-center" th:href="@{/}">
+                <img th:src="@{/images/Logo-yellow-bg.png}" alt="RedditDemo" width="50" height="50" class="d-inline-block align-text-top me-2">
+                <span class="fs-1 text-warning text-uppercase">Reddit</span>
             </a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
 
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/communities}">Communities</a>
-                    </li>
-                    <li class="nav-item" th:if="${#authentication == null}">
-                        <a class="nav-link" th:href="@{/login}">Login</a>
-                    </li>
-                    <li class="nav-item" th:if="${#authentication == null}">
-                        <a class="nav-link" th:href="@{/register}">Register</a>
-                    </li>
-                    <li class="nav-item" th:if="${#authentication != null}">
-                        <a class="nav-link" th:text="${#authentication.name}" href="#">Profile</a>
-                    </li>
-                    <li class="nav-item" th:if="${#authentication != null}">
-                        <a class="nav-link" th:href="@{/logout}">Logout</a>
-                    </li>
-                </ul>
+
+            <div class="flex-grow-1 mx-3 d-flex justify-content-center">
+                <form th:action="@{/search}" method="get" class="w-50 custom-search">
+                    <div class="input-group shadow-sm rounded-pill overflow-hidden border border-warning">
+                        <input type="text" class="form-control border-0 ps-3"
+                               placeholder="Search posts or communities..." name="query" required>
+                        <button class="btn btn-warning text-dark" type="submit">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </form>
             </div>
+
+
+            <!-- Right: User links with icons -->
+            <ul class="navbar-nav ms-auto d-flex flex-row align-items-center gap-3">
+
+                <!-- Communities Icon -->
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/communities}" title="Communities">
+                        <i class="bi bi-people-fill fs-5"></i>
+                    </a>
+                </li>
+
+                <!-- Create Post Icon -->
+                <li class="nav-item" th:if="${#authentication != null}">
+                    <a class="nav-link" href="#" title="Create Post" data-bs-toggle="modal" data-bs-target="#createPostModal">
+                        <i class="bi bi-plus-circle-fill fs-5"></i>
+                    </a>
+                </li>
+
+                <!-- Profile Image (Logged In) -->
+                <li class="nav-item" th:if="${#authentication != null}">
+                    <a class="nav-link p-0" th:href="@{/profile}">
+                        <img th:src="@{/images/default-profile.png}" alt="Profile" width="35" height="35"
+                             class="rounded-circle border border-light">
+                    </a>
+                </li>
+
+                <!-- Login/Register (Not Logged In) -->
+                <li class="nav-item" th:if="${#authentication == null}">
+                    <a class="nav-link" th:href="@{/login}">
+                        <i class="bi bi-box-arrow-in-right fs-5"></i>
+                    </a>
+                </li>
+                <li class="nav-item" th:if="${#authentication == null}">
+                    <a class="nav-link" th:href="@{/register}">
+                        <i class="bi bi-person-plus-fill fs-5"></i>
+                    </a>
+                </li>
+            </ul>
+
+
         </div>
     </nav>
 </div>

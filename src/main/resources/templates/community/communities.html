@@ -4,24 +4,68 @@
     <meta charset="UTF-8">
     <title>Communities</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+        .community-card {
+            transition: background-color 0.2s, transform 0.2s;
+        }
+
+        .community-card:hover {
+            background-color: #f8f9fa; /* slightly lighter on hover */
+            transform: translateY(-2px);
+        }
+
+        .community-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .join-btn {
+            min-width: 100px;
+        }
+
+        .joined {
+            background-color: #6c757d !important;
+            color: white !important;
+        }
+    </style>
 </head>
-<body class="container mt-5">
-<h2>All Communities</h2>
 
-<div th:if="${#lists.isEmpty(communities)}">
-    <p>No communities found.</p>
-</div>
+<body class="bg-light">
+<!-- Header -->
+<div th:replace="fragments/header :: header"></div>
 
-<div th:each="community : ${communities}" class="card mb-3">
-    <div class="card-body">
-        <h5 class="card-title" th:text="${community.name}">Community Name</h5>
-        <p class="card-text" th:text="${community.description}">Description...</p>
-        <p class="card-text">
-            Posts: <span th:text="${#lists.size(community.posts)}">0</span>
-        </p>
+<div class="container my-5">
+    <h2 class="mb-4 text-center fw-bold">Explore Communities</h2>
+
+    <div class="row g-3" th:each="community : ${communities}">
+        <div class="col-12 col-md-8 mx-auto">
+            <div class="card shadow-sm p-3 d-flex flex-row align-items-center community-card">
+
+                <!-- Logo -->
+                <img th:src="${community.logoUrl}" alt="Community Logo" class="community-logo me-3">
+
+                <!-- Name + Description -->
+                <div class="flex-grow-1">
+                    <h5 class="mb-1 fw-semibold" th:text="${community.name}">Community Name</h5>
+                    <p class="text-muted mb-0" th:text="${community.description}">Description...</p>
+                </div>
+
+                <!-- Join Button -->
+                <div>
+                    <a href="#"
+                       class="btn btn-warning rounded-pill px-3 join-btn"
+                       onclick="this.classList.toggle('joined'); this.innerText = this.classList.contains('joined') ? 'Joined' : 'Join'; return false;">
+                        <i class="bi bi-plus-circle me-1"></i> Join
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
-<a class="btn btn-primary mt-3" th:href="@{/}">Back to Home</a>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
 </body>
 </html>

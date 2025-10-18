@@ -1,0 +1,35 @@
+.sidebar-card {
+    background-color: rgb(248, 249, 250);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.sidebar-card h4, .sidebar-card h5 {
+    margin-bottom: 10px;
+}
+
+.sidebar-card ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar-card ul li {
+    margin-bottom: 5px;
+}
+
+.sticky-sidebar {
+    position: sticky;
+    top: 20px; /* keeps sidebar visible while scrolling */
+}
+
+/* Sidebar links */
+.sidebar-card ul.nav li a {
+    color: black;         /* black text */
+    text-decoration: none; /* remove underline */
+}
+
+.sidebar-card ul.nav li a:hover {
+    color: #333;       /* optional: change color on hover */
+    text-decoration: none; /* ensure underline stays removed */
+}

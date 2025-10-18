@@ -1,8 +1,9 @@
 package com.example.redditdemo.model;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import java.util.List;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity
 public class Community {
@@ -11,13 +12,18 @@ public class Community {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     private String name;
-
     private String description;
+    private String logoUrl;
 
-    @OneToMany(mappedBy = "community")
-    private List<Post> posts;
+    // Constructors
+    public Community() {}
+
+    public Community(String name, String description, String logoUrl) {
+        this.name = name;
+        this.description = description;
+        this.logoUrl = logoUrl;
+    }
 
     // Getters and setters
     public Long getId() { return id; }
@@ -29,6 +35,6 @@ public class Community {
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
-    public List<Post> getPosts() { return posts; }
-    public void setPosts(List<Post> posts) { this.posts = posts; }
+    public String getLogoUrl() { return logoUrl; }
+    public void setLogoUrl(String logoUrl) { this.logoUrl = logoUrl; }
 }
