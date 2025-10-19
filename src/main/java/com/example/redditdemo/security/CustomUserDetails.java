@@ -16,6 +16,10 @@ public class CustomUserDetails implements UserDetails {
 
     // Make your custom fields accessible
     public String getProfileImageUrl() {
+        // ✅ Fallback: if user has no profile image, return default image path
+        if (user.getProfileImageUrl() == null || user.getProfileImageUrl().isEmpty()) {
+            return "/images/p-1.jpg";
+        }
         return user.getProfileImageUrl();
     }
 

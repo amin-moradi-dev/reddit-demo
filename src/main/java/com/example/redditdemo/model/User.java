@@ -31,7 +31,7 @@ public class User {
     private String email;
 
     // ===== Added field for profile image =====
-    private String profileImageUrl = "/images/default-profile.png"; // default image for new users
+    private String profileImageUrl = "/images/p-1.jpg"; // default image for new users
 
     // ===== Getter and Setter for profileImageUrl =====
     public String getProfileImageUrl() {
