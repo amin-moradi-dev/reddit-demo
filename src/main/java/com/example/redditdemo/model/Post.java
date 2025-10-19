@@ -21,6 +21,10 @@ public class Post {
 
     private String imageUrl;
 
+    @Column(name = "created_at")
+    private LocalDateTime creationTime;
+
+
     @ManyToOne
     @JoinColumn(name = "community_id")
     private Community community;
@@ -29,7 +33,6 @@ public class Post {
     @JoinColumn(name = "author_id")
     private User author;
 
-    private LocalDateTime creationTime = LocalDateTime.now();
 
     public Community getCommunity() { return community; }
     public void setCommunity(Community community) { this.community = community; }
