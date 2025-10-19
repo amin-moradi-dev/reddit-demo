@@ -55,10 +55,12 @@
                 <!-- Profile Image (Logged In) -->
                 <li class="nav-item" th:if="${#authentication != null}">
                     <a class="nav-link p-0" th:href="@{/profile}">
-                        <img th:src="@{/images/default-profile.png}" alt="Profile" width="35" height="35"
+                        <img th:src="@{${#authentication.principal.profileImageUrl}}"
+                             alt="Profile" width="35" height="35"
                              class="rounded-circle border border-light">
                     </a>
                 </li>
+
 
                 <!-- Login/Register (Not Logged In) -->
                 <li class="nav-item" th:if="${#authentication == null}">

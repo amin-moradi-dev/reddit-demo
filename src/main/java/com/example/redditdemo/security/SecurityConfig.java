@@ -18,7 +18,15 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/register", "/login", "/css/**", "/communities").permitAll()
+                        .requestMatchers(
+                                "/",
+                                "/register",
+                                "/login",
+                                "/css/**",
+                                "/js/**",
+                                "/images/**",   // <-- allow images
+                                "/communities"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
@@ -30,4 +38,5 @@ public class SecurityConfig {
 
         return http.build();
     }
+
 }
