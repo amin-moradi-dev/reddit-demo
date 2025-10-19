@@ -55,7 +55,8 @@ public class AuthController {
         }
 
         // Redirect to login page with success message
-        return "redirect:/login?success";
+        return "redirect:/home?registerSuccess";
+
     }
 
     // Show login form
@@ -63,10 +64,14 @@ public class AuthController {
     public String showLogin(@RequestParam(required = false) String success,
                             Model model) {
 
+        // Add a fresh user object for the form
+        model.addAttribute("user", new User());
+
         if (success != null) {
             model.addAttribute("successMessage", "Registration successful! Please login.");
         }
 
         return "auth/login";
     }
+
 }

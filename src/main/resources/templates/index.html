@@ -86,6 +86,15 @@
 
         <!-- Main Content (9 columns) -->
         <div class="col-md-9 p-3 bg-white rounded">
+            <!-- Success messages -->
+            <div th:if="${param.registerSuccess}" class="alert alert-success">
+                Registration successful! You can now log in.
+            </div>
+
+            <div th:if="${param.loginSuccess}" class="alert alert-success">
+                Login successful! Welcome back.
+            </div>
+
             <h2>Welcome, <span th:text="${username != null ? username : 'guest'}">guest</span>!</h2>
             <div th:if="${#lists.isEmpty(posts)}">
                 <p>No posts available.</p>

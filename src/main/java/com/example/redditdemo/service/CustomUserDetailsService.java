@@ -1,7 +1,8 @@
-package com.example.redditdemo.security;
+package com.example.redditdemo.service;
 
 import com.example.redditdemo.model.User;
 import com.example.redditdemo.repository.UserRepository;
+import com.example.redditdemo.security.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
