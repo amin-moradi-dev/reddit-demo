@@ -13,11 +13,18 @@ public class Vote {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int value;
+    // ✅ Use EnumType.STRING to store "UPVOTE" or "DOWNVOTE" in the database
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private VoteType voteType;
 
+    // 🔗 Each vote belongs to a specific post
     @ManyToOne
+    @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
+    // 🔗 Each vote is cast by a specific user
     @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 }

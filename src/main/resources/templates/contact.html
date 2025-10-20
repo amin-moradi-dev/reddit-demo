@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/contact.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+</head>
+<body>
+
+<div class="content-wrapper">
+
+    <!-- Header -->
+    <div th:replace="fragments/header :: header"></div>
+
+    <!-- Main Content -->
+    <div class="main-content container">
+
+        <!-- Hero Section -->
+        <div class="text-center my-5">
+            <h1 class="display-4">Get in Touch</h1>
+            <p class="lead">We’d love to hear from you! Whether you have questions, feedback, or just want to say hello, reach out to us using the information below. Our team is here to assist you Monday to Friday, 9 AM – 6 PM.</p>
+        </div>
+
+        <!-- Section 1: Mission -->
+        <div class="section row align-items-center">
+            <div class="col-md-6">
+                <h2>Stay Connected</h2>
+                <p>
+                    Have questions or suggestions? We’re always here to help! Find our office location, reach out to us, or just drop by to say hello. Your feedback helps us grow and serve you better.
+                </p>
+            </div>
+            <div class="col-md-6">
+                <img th:src="@{/images/contact us page/contact-1.jpg}" alt="Creator Image" class="img-fluid">
+            </div>
+        </div>
+
+
+
+        <!-- Section 3: Creator Info -->
+        <div class="section row align-items-center">
+
+            <!-- Google Map -->
+            <div class="col-md-6 map-container">
+                <iframe src="https://www.google.com/maps/embed?pb=YOUR_GOOGLE_MAP_EMBED_URL" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+            <!-- Contact Information -->
+            <div class="col-md-6">
+                <h2>Contact Information</h2>
+                <p><strong>Address:</strong> 123 Main Street, City, Country</p>
+                <p><strong>Phone:</strong> +123 456 7890</p>
+                <p><strong>Email:</strong> <a href="mailto:info@example.com">info@example.com</a></p>
+                <p><strong>Working Hours:</strong> Mon–Fri, 9:00 AM – 6:00 PM</p>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <section class="contact-cta text-center py-5 bg-light">
+            <div class="container">
+                <h2 class="mb-3">Get in Touch with Us!</h2>
+                <p class="mb-4">Have questions, suggestions, or just want to say hello? We’d love to hear from you. Let’s make something great together!</p>
+                <a href="/contact" class="btn btn-warning btn-lg text-dark">Contact Us Now</a>
+            </div>
+        </section>
+
+
+    </div>
+
+    <!-- Footer -->
+    <div th:replace="fragments/footer :: footer"></div>
+
+</div>
+
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>
+
+
+
+
+
+

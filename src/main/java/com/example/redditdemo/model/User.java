@@ -1,16 +1,17 @@
 package com.example.redditdemo.model;
 
 import jakarta.persistence.*;
-import jakarta.persistence.Entity;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
-@Table(name = "`app_user`") // use backticks to escape
+import java.util.HashSet;
+import java.util.Set;
 
+@Entity
+@Table(name = "`app_user`") // Use backticks to escape reserved keyword
 @Getter
 @Setter
 public class User {
@@ -30,15 +31,32 @@ public class User {
     @Email(message = "Invalid email address")
     private String email;
 
-    // ===== Added field for profile image =====
-    private String profileImageUrl = "/images/p-1.jpg"; // default image for new users
+    // Profile image with default value
+    private String profileImageUrl = "/images/p-1.jpg";
 
-    // ===== Getter and Setter for profileImageUrl =====
-    public String getProfileImageUrl() {
-        return profileImageUrl;
+    // Bidirectional Many-to-Many with Community
+    @ManyToMany(mappedBy = "members")
+    private Set<Community> joinedCommunities = new HashSet<>();
+
+    // ===== Constructors =====
+    public User() {
     }
 
-    public void setProfileImageUrl(String profileImageUrl) {
-        this.profileImageUrl = profileImageUrl;
+    public User(String username, String password, String email, String profileImageUrl) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.profileImageUrl = profileImageUrl != null ? profileImageUrl : "/images/p-1.jpg";
+    }
+
+    // ===== Helper methods =====
+    public void joinCommunity(Community community) {
+        this.joinedCommunities.add(community);
+        community.getMembers().add(this);
+    }
+
+    public void leaveCommunity(Community community) {
+        this.joinedCommunities.remove(community);
+        community.getMembers().remove(this);
     }
 }

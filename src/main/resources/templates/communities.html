@@ -8,33 +8,25 @@
     <style>
         .community-card {
             transition: background-color 0.2s, transform 0.2s;
+            cursor: pointer; /* clickable card */
         }
-
         .community-card:hover {
-            background-color: #f8f9fa; /* slightly lighter on hover */
+            background-color: #f8f9fa;
             transform: translateY(-2px);
         }
-
         .community-logo {
             width: 60px;
             height: 60px;
             border-radius: 50%;
             object-fit: cover;
         }
-
         .join-btn {
             min-width: 100px;
         }
-
-        .joined {
-            background-color: #6c757d !important;
-            color: white !important;
-        }
     </style>
 </head>
-
 <body class="bg-light">
-<!-- Header -->
+
 <div th:replace="fragments/header :: header"></div>
 
 <div class="container my-5">
@@ -42,7 +34,8 @@
 
     <div class="row g-3" th:each="community : ${communities}">
         <div class="col-12 col-md-8 mx-auto">
-            <div class="card shadow-sm p-3 d-flex flex-row align-items-center community-card">
+            <div class="card shadow-sm p-3 d-flex flex-row align-items-center community-card"
+                 th:onclick="'window.location.href=\'/communities/' + ${community.id} + '\';'">
 
                 <!-- Logo -->
                 <img th:src="${community.logoUrl}" alt="Community Logo" class="community-logo me-3">
@@ -55,12 +48,15 @@
 
                 <!-- Join Button -->
                 <div>
-                    <a href="#"
-                       class="btn btn-warning rounded-pill px-3 join-btn"
-                       onclick="this.classList.toggle('joined'); this.innerText = this.classList.contains('joined') ? 'Joined' : 'Join'; return false;">
-                        <i class="bi bi-plus-circle me-1"></i> Join
-                    </a>
+                    <form th:action="@{'/communities/' + ${community.id} + '/join'}" method="post">
+                        <button type="submit"
+                                class="btn rounded-pill px-3"
+                                th:classappend="${#lists.contains(community.members, #authentication.principal)} ? 'btn-warning' : 'btn-warning'">
+                            <span th:text="${#lists.contains(community.members, #authentication.principal)} ? 'Joined' : 'Join'"></span>
+                        </button>
+                    </form>
                 </div>
+
             </div>
         </div>
     </div>

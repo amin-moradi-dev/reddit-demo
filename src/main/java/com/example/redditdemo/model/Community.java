@@ -1,11 +1,15 @@
 package com.example.redditdemo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
+@Getter
+@Setter
 public class Community {
 
     @Id
@@ -16,7 +20,16 @@ public class Community {
     private String description;
     private String logoUrl;
 
-    // Constructors
+    // ===== Many-to-Many relationship with users =====
+    @ManyToMany
+    @JoinTable(
+            name = "community_membership",
+            joinColumns = @JoinColumn(name = "community_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private Set<User> members = new HashSet<>();
+
+    // ===== Constructors =====
     public Community() {}
 
     public Community(String name, String description, String logoUrl) {
@@ -25,16 +38,14 @@ public class Community {
         this.logoUrl = logoUrl;
     }
 
-    // Getters and setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    // ===== Helper methods =====
+    public void addMember(User user) {
+        this.members.add(user);
+        user.getJoinedCommunities().add(this);
+    }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
-
-    public String getLogoUrl() { return logoUrl; }
-    public void setLogoUrl(String logoUrl) { this.logoUrl = logoUrl; }
+    public void removeMember(User user) {
+        this.members.remove(user);
+        user.getJoinedCommunities().remove(this);
+    }
 }

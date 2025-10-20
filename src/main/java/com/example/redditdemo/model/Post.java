@@ -2,11 +2,16 @@ package com.example.redditdemo.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Post {
+
+    // 🗨️ Relationship: one post can have many comments
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Comment> comments = new ArrayList<>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,22 +26,29 @@ public class Post {
 
     private String imageUrl;
 
-    @Column(name = "created_at")
-    private LocalDateTime creationTime;
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 
-
+    // 🌐 Each post belongs to one community
     @ManyToOne
     @JoinColumn(name = "community_id")
     private Community community;
 
+    // 👤 Each post has one author (user)
     @ManyToOne
     @JoinColumn(name = "author_id")
     private User author;
 
+    // ✅ Track total score of the post
+    private int voteCount = 0;
 
-    public Community getCommunity() { return community; }
-    public void setCommunity(Community community) { this.community = community; }
+    // 🕒 Automatically set createdAt before saving
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
 
+    // 🔹 Getters and setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -52,6 +64,16 @@ public class Post {
     public User getAuthor() { return author; }
     public void setAuthor(User author) { this.author = author; }
 
-    public LocalDateTime getCreationTime() { return creationTime; }
-    public void setCreationTime(LocalDateTime creationTime) { this.creationTime = creationTime; }
+    public Community getCommunity() { return community; }
+    public void setCommunity(Community community) { this.community = community; }
+
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    public List<Comment> getComments() { return comments; }
+    public void setComments(List<Comment> comments) { this.comments = comments; }
+
+    // ✅ Vote count getter/setter
+    public int getVoteCount() { return voteCount; }
+    public void setVoteCount(int voteCount) { this.voteCount = voteCount; }
 }

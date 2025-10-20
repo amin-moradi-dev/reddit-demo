@@ -1,0 +1,47 @@
+/* Full page wrapper to keep footer at the bottom */
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.content-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-content {
+    flex: 1;
+}
+
+/* General section styling */
+.section {
+    padding: 60px 0;
+}
+
+.section img {
+    max-width: 100%;
+    border-radius: 10px;
+}
+
+/* Hero Section */
+.hero {
+    text-align: center;
+    margin: 60px 0;
+}
+
+/* Call-to-action */
+.cta-section {
+    text-align: center;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 50px 20px;
+    margin-bottom: 40px;
+}
+
+/* Optional: hover effect for images */
+.section img:hover {
+    transform: scale(1.02);
+    transition: 0.3s ease-in-out;
+}

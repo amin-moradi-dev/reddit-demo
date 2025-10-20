@@ -7,12 +7,54 @@
     <link rel="stylesheet" th:href="@{/css/index.css}">
     <link rel="stylesheet" th:href="@{/css/sidebar.css}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-
-
 </head>
 <body class="bg-custom">
 
+<!-- Header -->
 <div th:replace="fragments/header :: header"></div>
+
+
+
+<!-- Modal: Create Post -->
+<div th:if="${#authentication != null}" class="modal fade" id="createPostModal" tabindex="-1" aria-labelledby="createPostModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createPostModalLabel">Create New Post</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <!-- Modal: Create Post -->
+                <form th:action="@{/posts/create}" th:object="${newPostDto}" method="post" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label>Title</label>
+                        <input type="text" th:field="*{title}" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Content</label>
+                        <textarea th:field="*{content}" class="form-control" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label>Upload Image (optional)</label>
+                        <input type="file" th:field="*{imageFile}" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-warning w-100">Submit Post</button>
+                </form>
+
+
+
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
 
 <div class="container mt-4">
     <div class="row">
@@ -23,11 +65,6 @@
                     <li class="nav-item mb-1">
                         <a class="nav-link active" th:href="@{/home}">
                             <i class="bi bi-house-door-fill me-2"></i> Home
-                        </a>
-                    </li>
-                    <li class="nav-item mb-1">
-                        <a class="nav-link" th:href="@{/posts}">
-                            <i class="bi bi-file-post-fill me-2"></i> Posts
                         </a>
                     </li>
                     <li class="nav-item mb-1">
@@ -47,7 +84,6 @@
                     </li>
                 </ul>
 
-
                 <h5 class="d-flex justify-content-between align-items-center">
                     Communities
                 </h5>
@@ -57,31 +93,15 @@
                             <i class="bi bi-plus-lg"></i> Create Community
                         </a>
                     </li>
-                    <li class="nav-item mb-1">
-                        <a class="nav-link p-1 text-dark" th:href="@{/communities/technology}">
-                            <i class="bi bi-laptop me-2"></i> Technology
-                        </a>
-                    </li>
-                    <li class="nav-item mb-1">
-                        <a class="nav-link p-1 text-dark" th:href="@{/communities/programming}">
-                            <i class="bi bi-code-square me-2"></i> Programming
-                        </a>
-                    </li>
-                    <li class="nav-item mb-1">
-                        <a class="nav-link p-1 text-dark" th:href="@{/communities/science}">
-                            <i class="bi bi-music-note-beamed me-2"></i> Music
-                        </a>
-                    </li>
-                    <li class="nav-item mb-1">
-                        <a class="nav-link p-1 text-dark" th:href="@{/communities/art}">
-                            <i class="bi bi-palette me-2"></i> Art
+
+                    <li class="nav-item mb-1" th:each="community : ${allCommunities}">
+                        <a class="nav-link p-1 text-dark" th:href="@{'/communities/' + ${community.id}}">
+                            <i class="bi bi-people-fill me-2"></i>
+                            <span th:text="${community.name}">Community Name</span>
                         </a>
                     </li>
                 </ul>
-
-
             </div>
-
         </div>
 
         <!-- Main Content (9 columns) -->
@@ -100,60 +120,251 @@
                 <p>No posts available.</p>
             </div>
 
-            <div th:if="${username != 'guest'}" class="mb-4 bg-white p-3 rounded shadow">
-                <h4>Create a new post</h4>
-                <form th:action="@{/posts/create}" th:object="${newPost}" method="post" class="row g-3 align-items-center">
 
 
-                <div class="mb-3">
-                        <label>Title</label>
-                        <input type="text" th:field="*{title}" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label>Content</label>
-                        <textarea th:field="*{content}" class="form-control" rows="3" required></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label>Image URL (optional)</label>
-                        <input type="text" th:field="*{imageUrl}" class="form-control">
-                    </div>
-                    <button type="submit" class="btn btn-success">Submit Post</button>
-                </form>
-            </div>
-
-            <div th:each="post : ${posts}" class="card mb-3 bg-white d-flex align-items-center">
+            <div th:each="post : ${posts}" class="card mb-3 bg-white d-flex align-items-start">
                 <div class="card-body">
-                    <h5 class="card-title" th:text="${post.title}">Post Title</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">
-                        by <span th:text="${post.author != null ? post.author.username : 'guest'}">Author</span> |
-                        Votes: <span th:text="${voteCounts[post.id]}">0</span>
-                    </h6>
+
+
+
+                    <div class="card-subtitle mb-2 text-muted d-flex align-items-center">
+                        <img th:src="@{${post.author.profileImageUrl != null ? post.author.profileImageUrl : '/images/default-profile.png'}}"
+                             alt="Profile"
+                             style="width:30px; height:30px; border-radius:50%; margin-right:8px;">
+                        <div>
+                            <div>
+                                <strong th:text="${post.author != null ? post.author.username : 'guest'}">Author</strong>
+                                <small class="text-muted ms-2"
+                                       th:text="${post.createdAt != null ? #temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm') : ''}">
+                                    2025-10-20 18:00
+                                </small>
+                            </div>
+                            <div>
+                                <small>Votes: <span th:text="${voteCounts[post.id]}">0</span></small>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+                    <h5 class="card-title">
+                        <a th:href="@{/posts/{id}(id=${post.id})}" class="text-decoration-none text-dark" th:text="${post.title}">Post Title</a>
+                    </h5>
+
                     <p class="card-text" th:text="${post.content}">Content...</p>
 
                     <div th:if="${post.imageUrl}">
                         <img th:src="${post.imageUrl}" alt="Post Image" class="img-fluid mt-2">
                     </div>
 
-                    <div th:if="${username != 'guest'}" class="mt-2">
-                        <form th:action="@{'/posts/' + ${post.id} + '/upvote'}" method="post" style="display:inline">
-                            <button type="submit" class="btn btn-sm btn-success">Upvote</button>
+                    <!-- Action buttons -->
+                    <div class="d-flex gap-2 mt-3 flex-wrap">
+
+
+                        <form th:action="@{'/posts/' + ${post.id} + '/upvote'}" method="post" class="vote-form d-inline">
+                            <button type="submit" class="btn btn-outline-secondary rounded-pill d-flex align-items-center gap-1">
+                                <i class="bi bi-hand-thumbs-up"></i>
+                                <span class="vote-count" th:text="${post.voteCount}">0</span>
+                            </button>
                         </form>
-                        <form th:action="@{'/posts/' + ${post.id} + '/downvote'}" method="post" style="display:inline">
-                            <button type="submit" class="btn btn-sm btn-danger">Downvote</button>
+
+                        <form th:action="@{'/posts/' + ${post.id} + '/downvote'}" method="post" class="vote-form d-inline">
+                            <button type="submit" class="btn btn-outline-secondary rounded-pill d-flex align-items-center gap-1">
+                                <i class="bi bi-hand-thumbs-down"></i>
+                                <span class="vote-count" th:text="${post.voteCount}">0</span>
+                            </button>
                         </form>
+
+
+
+
+
+                        <!-- Share Button -->
+                        <button class="share-btn btn btn-outline-secondary rounded-pill" th:attr="data-postid=${post.id}">
+                            <i class="bi bi-share"></i> Share
+                        </button>
+
+                        <div class="share-modal" th:attr="id='shareModal-' + ${post.id}">
+                            <div class="modal-content">
+                                <span class="close">&times;</span>
+                                <h3>Share this post</h3>
+
+
+                                <div class="share-options d-flex justify-content-around align-items-center mt-2">
+                                    <!-- Facebook -->
+                                    <a th:href="'#'" class="facebook-share text-secondary fs-4" target="_blank" title="Share on Facebook">
+                                        <i class="bi bi-facebook"></i>
+                                    </a>
+
+                                    <!-- Twitter -->
+                                    <a th:href="'#'" class="twitter-share text-info fs-4" target="_blank" title="Share on Twitter">
+                                        <i class="bi bi-twitter"></i>
+                                    </a>
+
+                                    <!-- LinkedIn -->
+                                    <a th:href="'#'" class="linkedin-share text-secondary fs-4" target="_blank" title="Share on LinkedIn">
+                                        <i class="bi bi-linkedin"></i>
+                                    </a>
+
+                                    <!-- Copy Link -->
+                                    <button class="copy-link btn btn-outline-secondary fs-5" title="Copy Link">
+                                        <i class="bi bi-clipboard"></i>
+                                    </button>
+                                </div>
+
+
+
+
+                            </div>
+                        </div>
+
+
+
+
+                        <!-- Comments -->
+                        <a th:href="@{/posts/{id}(id=${post.id})}"
+                           class="btn btn-outline-secondary rounded-pill d-flex align-items-center gap-1">
+                            <i class="bi bi-chat-left-text"></i>
+                            <span th:text="${commentCounts[post.id]}">0</span> Comments
+                        </a>
                     </div>
                 </div>
             </div>
 
+
+
+
+
+
+
+
+            <!-- Guest Call to Action -->
             <div th:if="${username == 'guest'}" class="mt-3">
-                <a class="btn btn-primary" th:href="@{/register}">Register</a>
-                <a class="btn btn-secondary" th:href="@{/login}">Login</a>
+                <a class="btn btn-warning" th:href="@{/register}">Register</a>
+                <a class="btn btn-warning" th:href="@{/login}">Login</a>
             </div>
         </div>
     </div>
 </div>
 
 <div th:replace="fragments/footer :: footer"></div>
+
+
+
+
+<!-- Search Script -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const searchInput = document.getElementById("search-input");
+        const resultsDiv = document.getElementById("search-results");
+
+        searchInput.addEventListener("input", function() {
+            const query = searchInput.value.trim();
+            if (query.length === 0) {
+                resultsDiv.innerHTML = "";
+                resultsDiv.classList.add("d-none");
+                return;
+            }
+
+            fetch(`/api/search?query=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(posts => {
+                    resultsDiv.innerHTML = "";
+                    if (posts.length === 0) {
+                        resultsDiv.innerHTML = `<div class="p-2">No results found</div>`;
+                    } else {
+                        posts.forEach(post => {
+                            const div = document.createElement("div");
+                            div.classList.add("p-2", "border-bottom");
+                            div.innerHTML = `<a href="/posts/${post.id}">${post.title}</a>`;
+                            resultsDiv.prepend(div);
+                        });
+                    }
+                    resultsDiv.classList.remove("d-none");
+                })
+                .catch(err => console.error(err));
+        });
+
+        document.addEventListener("click", function(e) {
+            if (!resultsDiv.contains(e.target) && e.target !== searchInput) {
+                resultsDiv.classList.add("d-none");
+            }
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll(".vote-form").forEach(form => {
+            form.addEventListener("submit", function(e) {
+                e.preventDefault(); // stop full page reload
+
+                const url = this.action;
+
+                fetch(url, {
+                    method: 'POST',
+                    credentials: 'same-origin'
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data && data.voteCount !== undefined) {
+                            const countSpan = this.querySelector(".vote-count");
+                            countSpan.textContent = data.voteCount; // update from server
+                        }
+                    })
+                    .catch(err => console.error("Vote error:", err));
+            });
+        });
+    });
+</script>
+
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll(".share-btn").forEach(btn => {
+            const postId = btn.dataset.postid;
+            const modal = document.getElementById(`shareModal-${postId}`);
+            const closeBtn = modal.querySelector(".close");
+            const copyBtn = modal.querySelector(".copy-link");
+
+            // Open modal
+            btn.addEventListener("click", () => modal.style.display = "block");
+
+            // Close modal
+            closeBtn.addEventListener("click", () => modal.style.display = "none");
+            window.addEventListener("click", (e) => {
+                if (e.target === modal) modal.style.display = "none";
+            });
+
+            // Copy link
+            copyBtn.addEventListener("click", () => {
+                const postUrl = `${window.location.origin}/posts/${postId}`;
+                navigator.clipboard.writeText(postUrl)
+                    .then(() => alert("Link copied!"))
+                    .catch(err => console.log("Failed to copy link:", err));
+            });
+
+            // Social links
+            modal.querySelector(".facebook-share").href =
+                `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.origin + '/posts/' + postId)}`;
+            modal.querySelector(".twitter-share").href =
+                `https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.origin + '/posts/' + postId)}`;
+            modal.querySelector(".linkedin-share").href =
+                `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(window.location.origin + '/posts/' + postId)}`;
+        });
+    });
+
+
+</script>
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
